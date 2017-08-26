@@ -32,7 +32,13 @@ public class Group implements Serializable {
     @Column(name = "group_name", nullable = false)
     private String groupName;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @OneToMany(mappedBy = "group")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserGroup> users = new HashSet<>();
@@ -71,6 +77,32 @@ public class Group implements Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Group description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public Group avatar(String avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Set<UserGroup> getUsers() {
@@ -198,6 +230,8 @@ public class Group implements Serializable {
         return "Group{" +
             "id=" + getId() +
             ", groupName='" + getGroupName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", avatar='" + getAvatar() + "'" +
             "}";
     }
 }

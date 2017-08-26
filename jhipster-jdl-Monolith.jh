@@ -1,5 +1,7 @@
 entity Group {
-	groupName String required
+	groupName String required,
+    description String,
+    avatar String
 }
 
 entity UserGroup{
@@ -100,3 +102,31 @@ relationship ManyToOne{
     SalesOrder{lastEdit} to User
 }
 
+/*INVITES*/
+enum InvitationStatus{
+	PENDING, ACCEPTED, DECLINED
+}
+
+entity Invitation{
+	invitationStatus InvitationStatus
+}
+
+relationship ManyToOne{
+	Invitation{inviter} to User,
+    Invitation{invitee} to User,
+    Invitation{group} to Group
+}
+
+/*REQUEST*/
+enum RequestStatus{
+	PENDING, ACCEPTED, DECLINED
+}
+
+entity Request{
+	requestStatus RequestStatus
+}
+
+relationship ManyToOne{
+	Request{requestor} to User,
+    Request{group} to Group
+}

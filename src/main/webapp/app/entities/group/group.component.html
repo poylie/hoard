@@ -31,6 +31,8 @@
             <tr>
             <th><span>ID</span></th>
             <th><span>Group Name</span></th>
+            <th><span>Description</span></th>
+            <th><span>Avatar</span></th>
             <th></th>
             </tr>
             </thead>
@@ -38,6 +40,8 @@
             <tr *ngFor="let group of groups ;trackBy: trackId">
                 <td><a [routerLink]="['../group', group.id ]">{{group.id}}</a></td>
                 <td>{{group.groupName}}</td>
+                <td>{{group.description}}</td>
+                <td>{{group.avatar}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

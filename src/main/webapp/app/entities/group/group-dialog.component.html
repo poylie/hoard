@@ -23,6 +23,16 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="group.description"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_avatar">Avatar</label>
+            <input type="text" class="form-control" name="avatar" id="field_avatar"
+                [(ngModel)]="group.avatar"  />
+        </div>
 
     </div>
     <div class="modal-footer">

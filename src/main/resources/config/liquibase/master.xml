@@ -12,6 +12,8 @@
     <include file="classpath:config/liquibase/changelog/20170826155005_added_entity_PurchaseOrderItem.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170826155006_added_entity_SalesOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170826155007_added_entity_SalesOrderItem.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170826222316_added_entity_Invitation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170826222317_added_entity_Request.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170826155002_added_entity_constraints_UserGroup.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170826155003_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
@@ -19,5 +21,7 @@
     <include file="classpath:config/liquibase/changelog/20170826155005_added_entity_constraints_PurchaseOrderItem.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170826155006_added_entity_constraints_SalesOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170826155007_added_entity_constraints_SalesOrderItem.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170826222316_added_entity_constraints_Invitation.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170826222317_added_entity_constraints_Request.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -3,19 +3,12 @@ package com.hoard.app.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.hoard.app.domain.Group;
 
-import com.hoard.app.domain.User;
-import com.hoard.app.domain.UserGroup;
-import com.hoard.app.domain.enumeration.Feature;
-import com.hoard.app.domain.enumeration.Permission;
 import com.hoard.app.repository.GroupRepository;
-import com.hoard.app.repository.UserRepository;
 import com.hoard.app.repository.search.GroupSearchRepository;
-import com.hoard.app.security.SecurityUtils;
 import com.hoard.app.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +16,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -44,9 +38,6 @@ public class GroupResource {
 
     private final GroupSearchRepository groupSearchRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public GroupResource(GroupRepository groupRepository, GroupSearchRepository groupSearchRepository) {
         this.groupRepository = groupRepository;
         this.groupSearchRepository = groupSearchRepository;
@@ -66,34 +57,11 @@ public class GroupResource {
         if (group.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new group cannot already have an ID")).body(null);
         }
-
-        group.setUsers(populateUserGroup(group));
-
         Group result = groupRepository.save(group);
         groupSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/groups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-
-    private Set<UserGroup> populateUserGroup(Group group) {
-        Set<UserGroup> userGroups = new HashSet<>();
-
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-
-        Arrays.stream(Feature.values()).forEach(feature -> {
-            Arrays.stream(Permission.values()).forEach(permission -> {
-                UserGroup userGroup = new UserGroup();
-                userGroup.setPermission(permission);
-                userGroup.setFeature(feature);
-                userGroup.setUser(user);
-                userGroup.setGroup(group);
-
-                userGroups.add(userGroup);
-            });
-        });
-
-        return userGroups;
     }
 
     /**

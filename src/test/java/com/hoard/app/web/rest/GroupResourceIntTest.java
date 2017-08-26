@@ -41,6 +41,12 @@ public class GroupResourceIntTest {
     private static final String DEFAULT_GROUP_NAME = "AAAAAAAAAA";
     private static final String UPDATED_GROUP_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
+    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+
     @Autowired
     private GroupRepository groupRepository;
 
@@ -81,7 +87,9 @@ public class GroupResourceIntTest {
      */
     public static Group createEntity(EntityManager em) {
         Group group = new Group()
-            .groupName(DEFAULT_GROUP_NAME);
+            .groupName(DEFAULT_GROUP_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .avatar(DEFAULT_AVATAR);
         return group;
     }
 
@@ -107,6 +115,8 @@ public class GroupResourceIntTest {
         assertThat(groupList).hasSize(databaseSizeBeforeCreate + 1);
         Group testGroup = groupList.get(groupList.size() - 1);
         assertThat(testGroup.getGroupName()).isEqualTo(DEFAULT_GROUP_NAME);
+        assertThat(testGroup.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testGroup.getAvatar()).isEqualTo(DEFAULT_AVATAR);
 
         // Validate the Group in Elasticsearch
         Group groupEs = groupSearchRepository.findOne(testGroup.getId());
@@ -161,7 +171,9 @@ public class GroupResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(group.getId().intValue())))
-            .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())));
+            .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())));
     }
 
     @Test
@@ -175,7 +187,9 @@ public class GroupResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(group.getId().intValue()))
-            .andExpect(jsonPath("$.groupName").value(DEFAULT_GROUP_NAME.toString()));
+            .andExpect(jsonPath("$.groupName").value(DEFAULT_GROUP_NAME.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()));
     }
 
     @Test
@@ -197,7 +211,9 @@ public class GroupResourceIntTest {
         // Update the group
         Group updatedGroup = groupRepository.findOne(group.getId());
         updatedGroup
-            .groupName(UPDATED_GROUP_NAME);
+            .groupName(UPDATED_GROUP_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .avatar(UPDATED_AVATAR);
 
         restGroupMockMvc.perform(put("/api/groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -209,6 +225,8 @@ public class GroupResourceIntTest {
         assertThat(groupList).hasSize(databaseSizeBeforeUpdate);
         Group testGroup = groupList.get(groupList.size() - 1);
         assertThat(testGroup.getGroupName()).isEqualTo(UPDATED_GROUP_NAME);
+        assertThat(testGroup.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testGroup.getAvatar()).isEqualTo(UPDATED_AVATAR);
 
         // Validate the Group in Elasticsearch
         Group groupEs = groupSearchRepository.findOne(testGroup.getId());
@@ -267,7 +285,9 @@ public class GroupResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(group.getId().intValue())))
-            .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())));
+            .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())));
     }
 
     @Test

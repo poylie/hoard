@@ -7,6 +7,8 @@ import { HoardPurchaseOrderModule } from './purchase-order/purchase-order.module
 import { HoardPurchaseOrderItemModule } from './purchase-order-item/purchase-order-item.module';
 import { HoardSalesOrderModule } from './sales-order/sales-order.module';
 import { HoardSalesOrderItemModule } from './sales-order-item/sales-order-item.module';
+import { HoardInvitationModule } from './invitation/invitation.module';
+import { HoardRequestModule } from './request/request.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -18,6 +20,8 @@ import { HoardSalesOrderItemModule } from './sales-order-item/sales-order-item.m
         HoardPurchaseOrderItemModule,
         HoardSalesOrderModule,
         HoardSalesOrderItemModule,
+        HoardInvitationModule,
+        HoardRequestModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
