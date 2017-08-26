@@ -1,0 +1,110 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySalesOrderLabel">Create or edit a Sales Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!salesOrder.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="salesOrder.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_referenceNumber">Reference Number</label>
+            <input type="text" class="form-control" name="referenceNumber" id="field_referenceNumber"
+                [(ngModel)]="salesOrder.referenceNumber" required />
+            <div [hidden]="!(editForm.controls.referenceNumber?.dirty && editForm.controls.referenceNumber?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.referenceNumber?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_transactionDate">Transaction Date</label>
+            <div class="input-group">
+                <input id="field_transactionDate" type="text" class="form-control" name="transactionDate" ngbDatepicker  #transactionDateDp="ngbDatepicker" [(ngModel)]="salesOrder.transactionDate"
+                required/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" (click)="transactionDateDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.transactionDate?.dirty && editForm.controls.transactionDate?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.transactionDate?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_lastUpdated">Last Updated</label>
+            <div class="d-flex">
+                <input id="field_lastUpdated" type="datetime-local" class="form-control" name="lastUpdated" [(ngModel)]="salesOrder.lastUpdated"
+                required  />
+            </div>
+            <div [hidden]="!(editForm.controls.lastUpdated?.dirty && editForm.controls.lastUpdated?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.lastUpdated?.errors?.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.lastUpdated?.errors?.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_customer">Customer</label>
+            <input type="text" class="form-control" name="customer" id="field_customer"
+                [(ngModel)]="salesOrder.customer" required />
+            <div [hidden]="!(editForm.controls.customer?.dirty && editForm.controls.customer?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.customer?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="salesOrder.status" id="field_status" >
+                <option value="APPROVED">APPROVED</option>
+                <option value="PENDING">PENDING</option>
+                <option value="REVIEWED">REVIEWED</option>
+                <option value="ABANDONED">ABANDONED</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="field_author">Author</label>
+            <select class="form-control" id="field_author" name="author" [(ngModel)]="salesOrder.author" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === salesOrder.author?.id ? salesOrder.author : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_lastEdit">Last Edit</label>
+            <select class="form-control" id="field_lastEdit" name="lastEdit" [(ngModel)]="salesOrder.lastEdit" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === salesOrder.lastEdit?.id ? salesOrder.lastEdit : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="field_group">Group</label>
+            <select class="form-control" id="field_group" name="group" [(ngModel)]="salesOrder.group" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="groupOption.id === salesOrder.group?.id ? salesOrder.group : groupOption" *ngFor="let groupOption of groups; trackBy: trackGroupById">{{groupOption.groupName}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

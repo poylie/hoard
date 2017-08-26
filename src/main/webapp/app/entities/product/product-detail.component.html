@@ -1,0 +1,51 @@
+
+<div *ngIf="product">
+    <h2><span>Product</span> {{product.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Name</span></dt>
+        <dd>
+            <span>{{product.name}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{product.description}}</span>
+        </dd>
+        <dt><span>Price</span></dt>
+        <dd>
+            <span>{{product.price}}</span>
+        </dd>
+        <dt><span>Group</span></dt>
+        <dd>
+            <div *ngIf="product.group">
+                <a [routerLink]="['/group', product.group?.id]">{{product.group?.id}}</a>
+            </div>
+        </dd>
+        <dt><span>Purchase Order Item</span></dt>
+        <dd>
+            <div *ngIf="product.purchaseOrderItem">
+                <a [routerLink]="['/purchase-order-item', product.purchaseOrderItem?.id]">{{product.purchaseOrderItem?.id}}</a>
+            </div>
+        </dd>
+        <dt><span>Sales Order Item</span></dt>
+        <dd>
+            <div *ngIf="product.salesOrderItem">
+                <a [routerLink]="['/sales-order-item', product.salesOrderItem?.id]">{{product.salesOrderItem?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'product/'+ product.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,74 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "author",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "salesOrder"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "lastEdit",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "salesOrder"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "salesOrderItem",
+            "otherEntityName": "salesOrderItem",
+            "otherEntityRelationshipName": "salesOrder"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "group",
+            "otherEntityName": "group",
+            "otherEntityField": "groupName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "referenceNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "transactionDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastUpdated",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "customer",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Status",
+            "fieldValues": "APPROVED,PENDING,REVIEWED,ABANDONED"
+        }
+    ],
+    "changelogDate": "20170826155006",
+    "javadoc": "SALES ORDER",
+    "entityTableName": "sales_order",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

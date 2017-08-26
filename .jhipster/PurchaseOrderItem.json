@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "item",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "purchaseOrderItem"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "purchaseOrder",
+            "otherEntityName": "purchaseOrder",
+            "otherEntityField": "referenceNumber"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "totalCost",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170826155005",
+    "entityTableName": "purchase_order_item",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

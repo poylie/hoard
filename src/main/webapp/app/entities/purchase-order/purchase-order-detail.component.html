@@ -1,0 +1,55 @@
+
+<div *ngIf="purchaseOrder">
+    <h2><span>Purchase Order</span> {{purchaseOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Reference Number</span></dt>
+        <dd>
+            <span>{{purchaseOrder.referenceNumber}}</span>
+        </dd>
+        <dt><span>Transaction Date</span></dt>
+        <dd>
+            <span>{{purchaseOrder.transactionDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Last Updated</span></dt>
+        <dd>
+            <span>{{purchaseOrder.lastUpdated | date:'medium'}}</span>
+        </dd>
+        <dt><span>Supplier</span></dt>
+        <dd>
+            <span>{{purchaseOrder.supplier}}</span>
+        </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+            <span>{{purchaseOrder.status}}</span>
+        </dd>
+        <dt><span>Author</span></dt>
+        <dd>
+            {{purchaseOrder.author?.id}}
+        </dd>
+        <dt><span>Last Edit</span></dt>
+        <dd>
+            {{purchaseOrder.lastEdit?.id}}
+        </dd>
+        <dt><span>Group</span></dt>
+        <dd>
+            <div *ngIf="purchaseOrder.group">
+                <a [routerLink]="['/group', purchaseOrder.group?.id]">{{purchaseOrder.group?.groupName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'purchase-order/'+ purchaseOrder.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

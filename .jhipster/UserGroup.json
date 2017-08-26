@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "group",
+            "otherEntityName": "group",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "userGroup"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "permission",
+            "fieldType": "Permission",
+            "fieldValues": "CREATE,EDIT,VIEW,APPROVE,ABANDON"
+        },
+        {
+            "fieldName": "feature",
+            "fieldType": "Feature",
+            "fieldValues": "SALES_ORDER,PURCHASE_ODER,INVENTORY,GROUP,PRODUCTS"
+        }
+    ],
+    "changelogDate": "20170826155002",
+    "entityTableName": "user_group",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

@@ -1,0 +1,55 @@
+
+<div *ngIf="salesOrder">
+    <h2><span>Sales Order</span> {{salesOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Reference Number</span></dt>
+        <dd>
+            <span>{{salesOrder.referenceNumber}}</span>
+        </dd>
+        <dt><span>Transaction Date</span></dt>
+        <dd>
+            <span>{{salesOrder.transactionDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span>Last Updated</span></dt>
+        <dd>
+            <span>{{salesOrder.lastUpdated | date:'medium'}}</span>
+        </dd>
+        <dt><span>Customer</span></dt>
+        <dd>
+            <span>{{salesOrder.customer}}</span>
+        </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+            <span>{{salesOrder.status}}</span>
+        </dd>
+        <dt><span>Author</span></dt>
+        <dd>
+            {{salesOrder.author?.id}}
+        </dd>
+        <dt><span>Last Edit</span></dt>
+        <dd>
+            {{salesOrder.lastEdit?.id}}
+        </dd>
+        <dt><span>Group</span></dt>
+        <dd>
+            <div *ngIf="salesOrder.group">
+                <a [routerLink]="['/group', salesOrder.group?.id]">{{salesOrder.group?.groupName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'sales-order/'+ salesOrder.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

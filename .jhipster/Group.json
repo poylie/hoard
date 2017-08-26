@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "user",
+            "otherEntityName": "userGroup",
+            "otherEntityRelationshipName": "group"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityRelationshipName": "group"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "purchaseOrder",
+            "otherEntityName": "purchaseOrder",
+            "otherEntityRelationshipName": "group"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "salesOrder",
+            "otherEntityName": "salesOrder",
+            "otherEntityRelationshipName": "group"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "groupName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170826155001",
+    "entityTableName": "group",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}
