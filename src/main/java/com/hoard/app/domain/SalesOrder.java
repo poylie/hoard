@@ -54,18 +54,16 @@ public class SalesOrder implements Serializable {
     @Column(name = "status")
     private Status status;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User author;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User lastEdit;
-
     @OneToMany(mappedBy = "salesOrder")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SalesOrderItem> salesOrderItems = new HashSet<>();
+
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private User lastEdit;
 
     @ManyToOne
     private Group group;
@@ -143,6 +141,31 @@ public class SalesOrder implements Serializable {
         this.status = status;
     }
 
+    public Set<SalesOrderItem> getSalesOrderItems() {
+        return salesOrderItems;
+    }
+
+    public SalesOrder salesOrderItems(Set<SalesOrderItem> salesOrderItems) {
+        this.salesOrderItems = salesOrderItems;
+        return this;
+    }
+
+    public SalesOrder addSalesOrderItem(SalesOrderItem salesOrderItem) {
+        this.salesOrderItems.add(salesOrderItem);
+        salesOrderItem.setSalesOrder(this);
+        return this;
+    }
+
+    public SalesOrder removeSalesOrderItem(SalesOrderItem salesOrderItem) {
+        this.salesOrderItems.remove(salesOrderItem);
+        salesOrderItem.setSalesOrder(null);
+        return this;
+    }
+
+    public void setSalesOrderItems(Set<SalesOrderItem> salesOrderItems) {
+        this.salesOrderItems = salesOrderItems;
+    }
+
     public User getAuthor() {
         return author;
     }
@@ -167,31 +190,6 @@ public class SalesOrder implements Serializable {
 
     public void setLastEdit(User user) {
         this.lastEdit = user;
-    }
-
-    public Set<SalesOrderItem> getSalesOrderItems() {
-        return salesOrderItems;
-    }
-
-    public SalesOrder salesOrderItems(Set<SalesOrderItem> salesOrderItems) {
-        this.salesOrderItems = salesOrderItems;
-        return this;
-    }
-
-    public SalesOrder addSalesOrderItem(SalesOrderItem salesOrderItem) {
-        this.salesOrderItems.add(salesOrderItem);
-        salesOrderItem.setSalesOrder(this);
-        return this;
-    }
-
-    public SalesOrder removeSalesOrderItem(SalesOrderItem salesOrderItem) {
-        this.salesOrderItems.remove(salesOrderItem);
-        salesOrderItem.setSalesOrder(null);
-        return this;
-    }
-
-    public void setSalesOrderItems(Set<SalesOrderItem> salesOrderItems) {
-        this.salesOrderItems = salesOrderItems;
     }
 
     public Group getGroup() {

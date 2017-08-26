@@ -1,0 +1,102 @@
+entity Group {
+	groupName String required
+}
+
+entity UserGroup{
+	permission Permission,
+    feature Feature
+}
+
+enum Permission {
+    CREATE, 
+    EDIT, 
+    VIEW, 
+    APPROVE, 
+    ABANDON
+}
+
+enum Feature {
+    SALES_ORDER, 
+    PURCHASE_ODER,
+    INVENTORY,
+    GROUP,
+    PRODUCTS
+}
+
+relationship OneToMany {
+    Group{user} to UserGroup
+}
+
+relationship ManyToOne{
+    UserGroup{user} to User
+}
+
+/*PRODUCT*/
+
+entity Product{
+	name String required,
+    description String,
+    price BigDecimal required
+}
+
+relationship OneToMany{
+	Group{product} to Product
+}
+
+enum Status{
+	APPROVED,
+    PENDING,
+    REVIEWED,
+    ABANDONED
+}
+
+/*PURCHASE ORDER*/
+entity PurchaseOrder{
+	referenceNumber String required,
+    transactionDate LocalDate required,
+    lastUpdated ZonedDateTime required,
+    supplier String required,
+    status Status
+}
+
+entity PurchaseOrderItem{
+	quantity Integer required,
+    totalCost Integer
+}
+
+relationship OneToMany{
+	PurchaseOrder{purchaseOrderItem} to PurchaseOrderItem{purchaseOrder(referenceNumber)},
+    Group{purchaseOrder} to PurchaseOrder{group(groupName)},
+    PurchaseOrderItem{item} to Product
+}
+
+relationship ManyToOne{
+	PurchaseOrder{author} to User,
+    PurchaseOrder{lastEdit} to User
+}
+
+/*SALES ORDER*/
+entity SalesOrder{
+	referenceNumber String required,
+    transactionDate LocalDate required,
+    lastUpdated ZonedDateTime required,
+    customer String required,
+    status Status
+}
+
+entity SalesOrderItem{
+	quantity Integer required,
+    totalPrice Integer
+}
+
+relationship OneToMany{
+	SalesOrder{salesOrderItem} to SalesOrderItem{salesOrder(referenceNumber)},
+    Group{salesOrder} to SalesOrder{group(groupName)},
+    SalesOrderItem{item} to Product
+}
+
+relationship ManyToOne{
+	SalesOrder{author} to User,
+    SalesOrder{lastEdit} to User
+}
+

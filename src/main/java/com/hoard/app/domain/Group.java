@@ -32,7 +32,7 @@ public class Group implements Serializable {
     @Column(name = "group_name", nullable = false)
     private String groupName;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserGroup> users = new HashSet<>();

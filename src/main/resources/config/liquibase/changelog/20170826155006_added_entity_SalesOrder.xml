@@ -40,11 +40,15 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
             <column name="author_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="last_edit_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="true" />
             </column>
+
+            <column name="last_edit_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="group_id" type="bigint">
                 <constraints nullable="true" />
             </column>

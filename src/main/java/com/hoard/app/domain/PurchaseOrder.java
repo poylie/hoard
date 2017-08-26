@@ -54,18 +54,16 @@ public class PurchaseOrder implements Serializable {
     @Column(name = "status")
     private Status status;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User author;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User lastEdit;
-
     @OneToMany(mappedBy = "purchaseOrder")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PurchaseOrderItem> purchaseOrderItems = new HashSet<>();
+
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private User lastEdit;
 
     @ManyToOne
     private Group group;
@@ -143,6 +141,31 @@ public class PurchaseOrder implements Serializable {
         this.status = status;
     }
 
+    public Set<PurchaseOrderItem> getPurchaseOrderItems() {
+        return purchaseOrderItems;
+    }
+
+    public PurchaseOrder purchaseOrderItems(Set<PurchaseOrderItem> purchaseOrderItems) {
+        this.purchaseOrderItems = purchaseOrderItems;
+        return this;
+    }
+
+    public PurchaseOrder addPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
+        this.purchaseOrderItems.add(purchaseOrderItem);
+        purchaseOrderItem.setPurchaseOrder(this);
+        return this;
+    }
+
+    public PurchaseOrder removePurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
+        this.purchaseOrderItems.remove(purchaseOrderItem);
+        purchaseOrderItem.setPurchaseOrder(null);
+        return this;
+    }
+
+    public void setPurchaseOrderItems(Set<PurchaseOrderItem> purchaseOrderItems) {
+        this.purchaseOrderItems = purchaseOrderItems;
+    }
+
     public User getAuthor() {
         return author;
     }
@@ -167,31 +190,6 @@ public class PurchaseOrder implements Serializable {
 
     public void setLastEdit(User user) {
         this.lastEdit = user;
-    }
-
-    public Set<PurchaseOrderItem> getPurchaseOrderItems() {
-        return purchaseOrderItems;
-    }
-
-    public PurchaseOrder purchaseOrderItems(Set<PurchaseOrderItem> purchaseOrderItems) {
-        this.purchaseOrderItems = purchaseOrderItems;
-        return this;
-    }
-
-    public PurchaseOrder addPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
-        this.purchaseOrderItems.add(purchaseOrderItem);
-        purchaseOrderItem.setPurchaseOrder(this);
-        return this;
-    }
-
-    public PurchaseOrder removePurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
-        this.purchaseOrderItems.remove(purchaseOrderItem);
-        purchaseOrderItem.setPurchaseOrder(null);
-        return this;
-    }
-
-    public void setPurchaseOrderItems(Set<PurchaseOrderItem> purchaseOrderItems) {
-        this.purchaseOrderItems = purchaseOrderItems;
     }
 
     public Group getGroup() {

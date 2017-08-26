@@ -2,26 +2,22 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "author",
-            "otherEntityName": "user",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "purchaseOrder"
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "lastEdit",
-            "otherEntityName": "user",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "purchaseOrder"
-        },
-        {
             "relationshipType": "one-to-many",
             "relationshipName": "purchaseOrderItem",
             "otherEntityName": "purchaseOrderItem",
             "otherEntityRelationshipName": "purchaseOrder"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "author",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "lastEdit",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",

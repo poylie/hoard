@@ -39,8 +39,7 @@ public class UserGroup implements Serializable {
     @ManyToOne
     private Group group;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private User user;
 
     public Long getId() {

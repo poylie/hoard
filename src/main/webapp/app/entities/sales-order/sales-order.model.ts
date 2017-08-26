@@ -15,9 +15,9 @@ export class SalesOrder implements BaseEntity {
         public lastUpdated?: any,
         public customer?: string,
         public status?: Status,
+        public salesOrderItems?: BaseEntity[],
         public author?: User,
         public lastEdit?: User,
-        public salesOrderItems?: BaseEntity[],
         public group?: BaseEntity,
     ) {
     }
