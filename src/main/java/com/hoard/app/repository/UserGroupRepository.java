@@ -15,5 +15,7 @@ public interface UserGroupRepository extends JpaRepository<UserGroup,Long> {
 
     @Query("select user_group from UserGroup user_group where user_group.user.login = ?#{principal.username}")
     List<UserGroup> findByUserIsCurrentUser();
-    
+
+    List<UserGroup> findByGroupId(Long groupId);
+
 }

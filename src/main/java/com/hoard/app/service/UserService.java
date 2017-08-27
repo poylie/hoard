@@ -4,6 +4,7 @@ import com.hoard.app.domain.Authority;
 import com.hoard.app.domain.User;
 import com.hoard.app.repository.AuthorityRepository;
 import com.hoard.app.config.Constants;
+import com.hoard.app.repository.UserGroupRepository;
 import com.hoard.app.repository.UserRepository;
 import com.hoard.app.repository.search.UserSearchRepository;
 import com.hoard.app.security.AuthoritiesConstants;
@@ -13,6 +14,7 @@ import com.hoard.app.service.dto.UserDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,6 +45,9 @@ public class UserService {
     private final UserSearchRepository userSearchRepository;
 
     private final AuthorityRepository authorityRepository;
+
+    @Autowired
+    private UserGroupRepository userGroupRepository;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
@@ -215,6 +220,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getAllManagedUsersNotInGroup(Pageable pageable, Long groupId) {
+
+        List<Long> existingUserIds = userGroupRepository.findByGroupId(groupId).stream().map(userGroup -> userGroup.getUser().getId()).collect(Collectors.toList());
+
+        return userRepository.findAllByLoginNotAndIdNotIn(pageable, Constants.ANONYMOUS_USER, existingUserIds).map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)

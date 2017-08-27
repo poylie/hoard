@@ -3,18 +3,25 @@ package com.hoard.app.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.hoard.app.domain.Invitation;
 
+import com.hoard.app.domain.UserGroup;
+import com.hoard.app.domain.enumeration.Feature;
+import com.hoard.app.domain.enumeration.InvitationStatus;
+import com.hoard.app.domain.enumeration.Permission;
 import com.hoard.app.repository.InvitationRepository;
+import com.hoard.app.repository.UserGroupRepository;
 import com.hoard.app.repository.search.InvitationSearchRepository;
 import com.hoard.app.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +43,9 @@ public class InvitationResource {
     private final InvitationRepository invitationRepository;
 
     private final InvitationSearchRepository invitationSearchRepository;
+
+    @Autowired
+    private UserGroupRepository userGroupRepository;
 
     public InvitationResource(InvitationRepository invitationRepository, InvitationSearchRepository invitationSearchRepository) {
         this.invitationRepository = invitationRepository;
@@ -80,10 +90,26 @@ public class InvitationResource {
             return createInvitation(invitation);
         }
         Invitation result = invitationRepository.save(invitation);
+
+        if(result.getInvitationStatus().equals(InvitationStatus.ACCEPTED)){
+            createUserGroup(result);
+        }
+
         invitationSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, invitation.getId().toString()))
             .body(result);
+    }
+
+    private void createUserGroup(Invitation result) {
+        Arrays.stream(Feature.values()).forEach(feature -> {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setFeature(feature);
+            userGroup.setPermission(Permission.VIEW);
+            userGroup.setUser(result.getInvitee());
+            userGroup.setGroup(result.getGroup());
+            userGroupRepository.save(userGroup);
+        });
     }
 
     /**
@@ -95,7 +121,7 @@ public class InvitationResource {
     @Timed
     public List<Invitation> getAllInvitations() {
         log.debug("REST request to get all Invitations");
-        return invitationRepository.findAll();
+        return invitationRepository.findByInviteeIsCurrentUser().stream().filter(invitation -> invitation.getInvitationStatus().equals(InvitationStatus.PENDING)).collect(Collectors.toList());
     }
 
     /**

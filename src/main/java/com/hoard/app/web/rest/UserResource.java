@@ -164,6 +164,21 @@ public class UserResource {
     }
 
     /**
+     * GET  /usersNotInGroup : get all users.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/users/{groupId}")
+    @Timed
+    public ResponseEntity<List<UserDTO>> getAllUsersNotInGroup(@ApiParam Pageable pageable, @PathVariable Long groupId) {
+        final Page<UserDTO> page = userService.getAllManagedUsersNotInGroup(pageable, groupId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    /**
      * @return a string list of the all of the roles
      */
     @GetMapping("/users/authorities")

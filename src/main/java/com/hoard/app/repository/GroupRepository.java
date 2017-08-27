@@ -1,9 +1,10 @@
 package com.hoard.app.repository;
 
 import com.hoard.app.domain.Group;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
+import java.util.Set;
 
 
 /**
@@ -12,5 +13,7 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface GroupRepository extends JpaRepository<Group,Long> {
-    
+
+    Set<Group> findByUsersUserLogin(String login);
+
 }

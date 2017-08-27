@@ -2,26 +2,31 @@ package com.hoard.app.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.hoard.app.domain.Group;
-
+import com.hoard.app.domain.User;
+import com.hoard.app.domain.UserGroup;
+import com.hoard.app.domain.enumeration.Feature;
+import com.hoard.app.domain.enumeration.Permission;
 import com.hoard.app.repository.GroupRepository;
+import com.hoard.app.repository.UserGroupRepository;
+import com.hoard.app.repository.UserRepository;
 import com.hoard.app.repository.search.GroupSearchRepository;
+import com.hoard.app.security.SecurityUtils;
 import com.hoard.app.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Group.
@@ -37,6 +42,12 @@ public class GroupResource {
     private final GroupRepository groupRepository;
 
     private final GroupSearchRepository groupSearchRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserGroupRepository userGroupRepository;
 
     public GroupResource(GroupRepository groupRepository, GroupSearchRepository groupSearchRepository) {
         this.groupRepository = groupRepository;
@@ -57,12 +68,36 @@ public class GroupResource {
         if (group.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new group cannot already have an ID")).body(null);
         }
+
+        group.setUsers(populateUserGroup(group));
+
         Group result = groupRepository.save(group);
         groupSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/groups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+    private Set<UserGroup> populateUserGroup(Group group) {
+        Set<UserGroup> userGroups = new HashSet<>();
+
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
+        Arrays.stream(Feature.values()).forEach(feature -> {
+            Arrays.stream(Permission.values()).forEach(permission -> {
+                UserGroup userGroup = new UserGroup();
+                userGroup.setPermission(permission);
+                userGroup.setFeature(feature);
+                userGroup.setUser(user);
+                userGroup.setGroup(group);
+
+                userGroups.add(userGroup);
+            });
+        });
+
+        return userGroups;
+    }
+
 
     /**
      * PUT  /groups : Updates an existing group.
@@ -98,6 +133,20 @@ public class GroupResource {
         log.debug("REST request to get all Groups");
         return groupRepository.findAll();
     }
+
+    /**
+     * GET  /groupsForUser : get all the groups where user belongs to.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of groups in body
+     */
+    @GetMapping("/groupsForUser")
+    @Timed
+    public List<Group> getAllGroupsForCurrentUser() {
+        log.debug("REST request to get all Groups");
+
+        return new ArrayList<Group>(groupRepository.findByUsersUserLogin(SecurityUtils.getCurrentUserLogin()));
+    }
+
 
     /**
      * GET  /groups/:id : get the "id" group.
@@ -139,8 +188,29 @@ public class GroupResource {
     @Timed
     public List<Group> searchGroups(@RequestParam String query) {
         log.debug("REST request to search Groups for query {}", query);
+
         return StreamSupport
             .stream(groupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * SEARCH  /_search/groups?query=:query : search for the group corresponding
+     * to the query.
+     *
+     * @param query the query of the group search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/groupsCurrentuser")
+    @Timed
+    public List<Group> searchGroupsCurrentUser(@RequestParam String query) {
+        log.debug("REST request to search Groups for query {}", query);
+
+        List<UserGroup> userGroupList = userGroupRepository.findByUserIsCurrentUser();
+
+        return StreamSupport
+            .stream(groupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .filter(group -> userGroupList.stream().map(userGroup -> userGroup.getGroup().getId()).collect(Collectors.toList()).contains(group.getId()))
             .collect(Collectors.toList());
     }
 

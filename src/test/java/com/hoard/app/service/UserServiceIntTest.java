@@ -1,8 +1,13 @@
 package com.hoard.app.service;
 
 import com.hoard.app.HoardApp;
-import com.hoard.app.domain.User;
 import com.hoard.app.config.Constants;
+import com.hoard.app.domain.Group;
+import com.hoard.app.domain.User;
+import com.hoard.app.domain.UserGroup;
+import com.hoard.app.domain.enumeration.Feature;
+import com.hoard.app.domain.enumeration.Permission;
+import com.hoard.app.repository.GroupRepository;
 import com.hoard.app.repository.UserRepository;
 import com.hoard.app.service.dto.UserDTO;
 import com.hoard.app.service.util.RandomUtil;
@@ -10,18 +15,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test class for the UserResource REST controller.
@@ -38,6 +44,9 @@ public class UserServiceIntTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Test
     public void assertThatUserMustExistToResetPassword() {
@@ -138,5 +147,35 @@ public class UserServiceIntTest {
         assertThat(userRepository.findOneByLogin("johndoe")).isPresent();
         userService.removeNotActivatedUsers();
         assertThat(userRepository.findOneByLogin("johndoe")).isNotPresent();
+    }
+
+    @Test
+    public void testUserNotInGroup() {
+        User user = userService.createUser("johndoe", "johndoe", "John", "Doe", "john.doe@localhost", "http://placehold.it/50x50", "en-US");
+        userRepository.save(user);
+        User user2 = userService.createUser("johndoe2", "johndoe2", "John2", "Doe2", "john.doe2@localhost", "http://placehold.it/50x50", "en-US");
+        userRepository.save(user2);
+
+        Group group = new Group();
+        group.setGroupName("test");
+
+        Set<UserGroup> userGroupList = new HashSet<>();
+        UserGroup userGroup = new UserGroup();
+        userGroup.setGroup(group);
+        userGroup.setUser(user);
+        userGroup.setPermission(Permission.CREATE);
+        userGroup.setFeature(Feature.GROUP);
+        userGroupList.add(userGroup);
+
+        group.setUsers(userGroupList);
+
+        group = groupRepository.save(group);
+
+        final PageRequest pageable = new PageRequest(0, (int) userRepository.count());
+        final Page<UserDTO> allManagedUsers = userService.getAllManagedUsersNotInGroup(pageable, group.getId());
+        assertThat(allManagedUsers.getContent().stream()
+            .anyMatch(userDTO -> userDTO.getLogin().equals(user2.getLogin())))
+            .isTrue();
+
     }
 }
