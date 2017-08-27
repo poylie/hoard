@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "inviter",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "invitee",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "group",
+            "otherEntityName": "group",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "invitationStatus",
+            "fieldType": "InvitationStatus",
+            "fieldValues": "PENDING,ACCEPTED,DECLINED"
+        }
+    ],
+    "changelogDate": "20170826222316",
+    "entityTableName": "invitation",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "requestor",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "group",
+            "otherEntityName": "group",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "requestStatus",
+            "fieldType": "RequestStatus",
+            "fieldValues": "PENDING,ACCEPTED,DECLINED"
+        }
+    ],
+    "changelogDate": "20170826222317",
+    "entityTableName": "request",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}
