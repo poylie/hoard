@@ -3,18 +3,26 @@ package com.hoard.app.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.hoard.app.domain.Request;
 
+import com.hoard.app.domain.UserGroup;
+import com.hoard.app.domain.enumeration.Feature;
+import com.hoard.app.domain.enumeration.InvitationStatus;
+import com.hoard.app.domain.enumeration.Permission;
+import com.hoard.app.domain.enumeration.RequestStatus;
 import com.hoard.app.repository.RequestRepository;
+import com.hoard.app.repository.UserGroupRepository;
 import com.hoard.app.repository.search.RequestSearchRepository;
 import com.hoard.app.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +44,9 @@ public class RequestResource {
     private final RequestRepository requestRepository;
 
     private final RequestSearchRepository requestSearchRepository;
+
+    @Autowired
+    private UserGroupRepository userGroupRepository;
 
     public RequestResource(RequestRepository requestRepository, RequestSearchRepository requestSearchRepository) {
         this.requestRepository = requestRepository;
@@ -80,10 +91,27 @@ public class RequestResource {
             return createRequest(request);
         }
         Request result = requestRepository.save(request);
+
+        if(result.getRequestStatus().equals(RequestStatus.ACCEPTED)){
+            createUserGroup(result);
+        }
+
         requestSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, request.getId().toString()))
             .body(result);
+    }
+
+    private void createUserGroup(Request result) {
+        Arrays.stream(Feature.values()).forEach(feature -> {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setFeature(feature);
+            userGroup.setPermission(Permission.VIEW);
+            userGroup.setUser(result.getRequestor());
+            userGroup.setGroup(result.getGroup());
+            userGroupRepository.save(userGroup);
+        });
+
     }
 
     /**

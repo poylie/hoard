@@ -1,10 +1,7 @@
 <div class="row">
     <div class="col-md-3">
-        <span class="hipster img-fluid img-rounded"></span>
     </div>
     <div class="col-md-9">
-        <h1 class="display-4">Welcome, Java Hipster!</h1>
-        <p class="lead">This is your homepage</p>
 
         <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
@@ -21,22 +18,73 @@
                 <span>You don't have an account yet?</span>
                 <a class="alert-link" routerLink="register">Register a new account</a>
             </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2>To Do List <small>Sample tasks</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                          </li>
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                              <li><a href="#">Settings 1</a>
+                              </li>
+                              <li><a href="#">Settings 2</a>
+                              </li>
+                            </ul>
+                          </li>
+                          <li><a class="close-link"><i class="fa fa-close"></i></a>
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content">
+  
+                        <div class="">
+                          <ul class="to_do">
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Schedule meeting with new client </p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Create email address for new intern</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Have IT fix the network printer</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Copy backups to offsite location</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Food truck fixie locavors mcsweeney</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Food truck fixie locavors mcsweeney</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Create email address for new intern</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Have IT fix the network printer</p>
+                            </li>
+                            <li>
+                              <p>
+                                <input type="checkbox" class="flat"> Copy backups to offsite location</p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
         </div>
-
-        <p>
-            If you have any question on JHipster:
-        </p>
-
-        <ul>
-            <li><a href="http://jhipster.github.io/" target="_blank" rel="noopener">JHipster homepage</a></li>
-            <li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener">JHipster on Stack Overflow</a></li>
-            <li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener">JHipster bug tracker</a></li>
-            <li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener">JHipster public chat room</a></li>
-            <li><a href="https://twitter.com/java_hipster" target="_blank" rel="noopener">follow @java_hipster on Twitter</a></li>
-        </ul>
-
-        <p>
-            <span>If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener">Github</a>!
-        </p>
     </div>
 </div>
