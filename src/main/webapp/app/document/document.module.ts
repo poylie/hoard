@@ -1,17 +1,14 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { HoardSharedModule } from '../shared';
-
-import { HOME_ROUTE, HomeComponent } from './';
+import { DOCUMENT_ROUTE, DocumentComponent } from './';
 
 @NgModule({
     imports: [
-        HoardSharedModule,
-        RouterModule.forRoot([ HOME_ROUTE ], { useHash: true }),
+        RouterModule.forRoot([ DOCUMENT_ROUTE ], { useHash: true })
     ],
     declarations: [
-        HomeComponent,
+        DocumentComponent,
     ],
     entryComponents: [
     ],
@@ -19,4 +16,4 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HoardHomeModule {}
+export class JhipsterDocumentModule {}

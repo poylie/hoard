@@ -5,11 +5,39 @@ Main page styles
 
 .hipster {
     display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../../content/images/hipster.png") no-repeat center top;
+    width: 500px;
+    height: 500px;
+    background: url("../../content/images/hoard.png") no-repeat center top;
     background-size: contain;
 }
+
+.banner-content {
+    text-align: right;
+    h1{
+        color: #1C6E8C;
+        font-weight: bold;
+    }
+    h1.everything {
+        color: #FBFCFF;
+    }
+    p{
+        color: #D0CCD0;
+    }
+}
+
+.login-register {
+    text-align: center;
+    letter-spacing: 4px;
+    font-size: 20px;
+    padding-top: 60px;
+    color: #FBFCFF;
+    a {
+        color: #FBFCFF;
+        text-decoration: none;
+    }
+    
+}
+
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
@@ -20,7 +48,7 @@ only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
     .hipster {
-        background: url("../../content/images/hipster2x.png") no-repeat center top;
+        background: url("../../content/images/hoard.png") no-repeat center top;
         background-size: contain;
     }
 }

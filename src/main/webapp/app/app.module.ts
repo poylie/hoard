@@ -9,6 +9,7 @@ import { HoardHomeModule } from './home/home.module';
 import { HoardAdminModule } from './admin/admin.module';
 import { HoardAccountModule } from './account/account.module';
 import { HoardEntityModule } from './entities/entity.module';
+import { SidebarModule } from 'ng-sidebar';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -25,8 +26,12 @@ import {
     ErrorComponent
 } from './layouts';
 
+import {JhipsterAboutUsModule} from './about-us/about-us.module';
+import {JhipsterDocumentModule} from './document/document.module';
 @NgModule({
     imports: [
+JhipsterDocumentModule,
+JhipsterAboutUsModule,
         BrowserModule,
         LayoutRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
@@ -35,6 +40,7 @@ import {
         HoardAdminModule,
         HoardAccountModule,
         HoardEntityModule,
+        SidebarModule.forRoot()
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -42,7 +48,7 @@ import {
         NavbarComponent,
         ErrorComponent,
         PageRibbonComponent,
-        FooterComponent
+        FooterComponent,
     ],
     providers: [
         ProfileService,

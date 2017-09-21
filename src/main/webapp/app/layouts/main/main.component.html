@@ -1,11 +1,72 @@
-<jhi-page-ribbon></jhi-page-ribbon>
-<div>
-    <router-outlet name="navbar"></router-outlet>
+<div class="home-page">
+    <ng-sidebar-container>
+        <!-- A sidebar -->
+        <ng-sidebar #sidebar [(opened)]="_opened" [(mode)]="mode">
+            <div class="sidenav">
+                <div class="navbar-brand sidenav-brand">
+                    <span class="sidenav-logo"></span>
+                </div>
+                <ul class="nav side-menu">
+                    <a routerLink="group" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Group</span></li>
+                    </a>
+                    <a routerLink="user-group" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>User Group</span></li>
+                    </a>
+                    <a routerLink="product" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Product</span></li>
+                    </a>
+                    <a routerLink="purchase-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Purchase Order</span></li>
+                    </a>
+                    <a routerLink="sales-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Sales Orer</span></li>
+                    </a>
+                    <a routerLink="invitation" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Invitation</span></li>
+                    </a>
+                    <a routerLink="request" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Request</span></li>
+                    </a>
+                </ul>
+            </div>
+        </ng-sidebar>
+        <!-- Page content -->
+        <div ng-sidebar-content>
+            <jhi-page-ribbon></jhi-page-ribbon>
+            <div>
+                <router-outlet name="navbar"></router-outlet>
+            </div>
+            <div class="container-fluid" [style.background-color]="isAuthenticated() ? 'transparent' : '#274156'">
+                <div class="card jh-card">
+                    <router-outlet></router-outlet>
+                    <router-outlet name="popup"></router-outlet>
+                </div>
+            </div>
+            <jhi-footer *ngIf="!isAuthenticated()"></jhi-footer>
+        </div>
+    </ng-sidebar-container>
 </div>
-<div class="container-fluid">
-    <div class="card jh-card">
-        <router-outlet></router-outlet>
-        <router-outlet name="popup"></router-outlet>
+<!-- <div [ngSwitch]="isAuthenticated()">
+    <div class="container-fluid" *ngSwitchCase="true">
+        <div class="card jh-card">
+            <router-outlet></router-outlet>
+            <router-outlet name="popup"></router-outlet>
+        </div>
+        <jhi-footer></jhi-footer>
     </div>
-    <jhi-footer></jhi-footer>
-</div>
+    <div class="container-fluid welcome-page" *ngSwitchCase="false">
+        <div class="card jh-card">
+            <router-outlet></router-outlet>
+            <router-outlet name="popup"></router-outlet>
+        </div>
+        <jhi-footer></jhi-footer>
+    </div>
+</div> -->

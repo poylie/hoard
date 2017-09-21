@@ -6,6 +6,7 @@ import { ProfileService } from '../profiles/profile.service';
 import { Principal, LoginModalService, LoginService } from '../../shared';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
+import { JhiMainComponent } from '../main/main.component';
 
 @Component({
     selector: 'jhi-navbar',
@@ -22,16 +23,19 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    mainComp: JhiMainComponent;
 
     constructor(
         private loginService: LoginService,
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private comp: JhiMainComponent
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
+        this.mainComp = comp;
     }
 
     ngOnInit() {
@@ -49,11 +53,16 @@ export class NavbarComponent implements OnInit {
         return this.principal.isAuthenticated();
     }
 
+    toggleSidebar() {
+        this.mainComp._toggleSidebar();
+    }
+
     login() {
         this.modalRef = this.loginModalService.open();
     }
 
     logout() {
+        this.mainComp.closeSidebar();
         this.collapseNavbar();
         this.loginService.logout();
         this.router.navigate(['']);

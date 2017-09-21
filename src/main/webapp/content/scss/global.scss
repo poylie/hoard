@@ -3,9 +3,60 @@
 Bootstrap tweaks
 ===============================================================*/
 
+body {
+    background-color: #fff;
+}
+
 body, h1, h2, h3, h4 {
     font-weight: 300;
+    font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
 }
+
+.welcome-page {
+    background-color: #274156;
+}
+
+.card {
+    background-color: transparent;
+}
+
+.sidenav {
+    width: 200px;
+}
+
+.ng-sidebar {
+    background-color: #605856;
+    .sidenav-brand {
+        padding: 25px 10px 20px 10px;
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        .sidenav-logo {
+            height: 35px;
+            width: 50px;
+            display: inline-block;
+            vertical-align: middle;
+            background: url("../images/hoard-white.png") no-repeat center center;
+            background-size: contain;
+        }
+    }
+    .side-menu {
+        li {
+            padding: 10px;
+        }
+        li:hover {
+            background-color: darken(#605856 , 10%)
+        }
+        a {
+            color: #FBFCFF;
+            text-decoration: none;
+        }
+        flex-direction: column;
+    }
+}
+
+
+
 
 
 /* ==========================================================================
@@ -35,7 +86,6 @@ Generic styles
 
 .jh-card {
     padding: 1.5%;
-    margin-top: 20px;
     border: none;
 }
 
@@ -67,7 +117,17 @@ Generic styles
 }
 
 .footer {
-    border-top: 1px solid rgba(0,0,0,.125);
+    color: #D0CCD0;
+    font-weight: bold;
+    text-align: center;
+    .row {
+        border-top: 1px solid #605856;
+        background-color: #1C6E8C;
+        padding-top: 30px;
+        .footer-icons {
+            letter-spacing: 15px;
+        }
+    }
 }
 
 /* ==========================================================================

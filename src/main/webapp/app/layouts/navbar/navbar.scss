@@ -7,8 +7,10 @@ Navbar
     color: #ccc
 }
 
+
+
 .jh-navbar {
-    background-color: #353d47;
+    background-color: none;
     padding: .2em 1em;
     .profile-image {
         margin: -10px 0px;
@@ -26,6 +28,9 @@ Navbar
         padding: 0.5em;
         .nav-item {
             margin-left: 1.5rem;
+            .logged-in {
+                color: #274156;
+            }
         }
     }
     a.nav-link {
@@ -59,11 +64,19 @@ Logo styles
     &.logo {
         padding: 5px 15px;
         .logo-img {
-            height: 45px;
-            width: 70px;
+            height: 70px;
+            width: 105px;
             display: inline-block;
             vertical-align: middle;
-            background: url("../../../content/images/logo-jhipster.png") no-repeat center center;
+            background: url("../../../content/images/hoard-logo.png") no-repeat center center;
+            background-size: contain;
+        }
+        .logo-img-login {
+            height: 70px;
+            width: 105px;
+            display: inline-block;
+            vertical-align: middle;
+            background: url("../../../content/images/hoard-logo-colored.png") no-repeat center center;
             background-size: contain;
         }
     }
