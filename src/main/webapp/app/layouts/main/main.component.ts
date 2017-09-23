@@ -3,6 +3,7 @@ import { Router, ActivatedRouteSnapshot, NavigationEnd, RoutesRecognized } from 
 
 import { Title } from '@angular/platform-browser';
 import { StateStorageService, Principal } from '../../shared';
+import { GroupService, Group } from '../../entities/group';
 
 @Component({
     selector: 'jhi-main',
@@ -16,12 +17,14 @@ import { StateStorageService, Principal } from '../../shared';
 export class JhiMainComponent implements OnInit {
     _opened = false;
     mode = 'push';
+    currentGroup: Group;
 
     constructor(
         private titleService: Title,
         private router: Router,
         private principal: Principal,
         private $storageService: StateStorageService,
+        private groupService: GroupService
     ) { }
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -46,6 +49,11 @@ export class JhiMainComponent implements OnInit {
 
     _toggleSidebar() {
         this._opened = !this._opened;
+    }
+
+    getCurrentGroup(): Group {
+        this.currentGroup = this.groupService.getCurrentGroup();
+        return this.currentGroup;
     }
 
     closeSidebar() {

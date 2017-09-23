@@ -13,6 +13,7 @@ import {
     GroupDeleteDialogComponent,
     groupRoute,
     groupPopupRoute,
+    GroupDashboardComponent,
 } from './';
 
 const ENTITY_STATES = [
@@ -26,15 +27,14 @@ const ENTITY_STATES = [
         RouterModule.forRoot(ENTITY_STATES, { useHash: true })
     ],
     declarations: [
-        GroupComponent,
         GroupDetailComponent,
         GroupDialogComponent,
         GroupDeleteDialogComponent,
         GroupPopupComponent,
         GroupDeletePopupComponent,
+        GroupDashboardComponent,
     ],
     entryComponents: [
-        GroupComponent,
         GroupDialogComponent,
         GroupPopupComponent,
         GroupDeleteDialogComponent,

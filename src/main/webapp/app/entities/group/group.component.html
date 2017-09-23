@@ -28,45 +28,41 @@
     <div class="table-responsive" *ngIf="groups">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span>ID</span></th>
-            <th><span>Group Name</span></th>
-            <th><span>Description</span></th>
-            <th><span>Avatar</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span>ID</span></th>
+                    <th><span>Group Name</span></th>
+                    <th><span>Description</span></th>
+                    <th><span>Avatar</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let group of groups ;trackBy: trackId">
-                <td><a [routerLink]="['../group', group.id ]">{{group.id}}</a></td>
-                <td>{{group.groupName}}</td>
-                <td>{{group.description}}</td>
-                <td>{{group.avatar}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../group', group.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'group/'+ group.id + '/edit'} }]"
-                                replaceUrl="true"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'group/'+ group.id + '/delete'} }]"
-                                replaceUrl="true"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                <tr *ngFor="let group of groups ;trackBy: trackId">
+                    <td><a [routerLink]="['../group', group.id ]">{{group.id}}</a></td>
+                    <td>{{group.groupName}}</td>
+                    <td>{{group.description}}</td>
+                    <td>{{group.avatar}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../groupDashboard', group.id ]" class="btn btn-info btn-sm">
+                                    <span class="fa fa-group"></span>
+                                    <span class="hidden-md-down">Select Group</span>
+                                </button>
+                            <button type="submit" [routerLink]="['../group', group.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="hidden-md-down">View</span>
+                            </button>
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'group/'+ group.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="hidden-md-down">Edit</span>
+                            </button>
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'group/'+ group.id + '/delete'} }]" replaceUrl="true" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="hidden-md-down">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

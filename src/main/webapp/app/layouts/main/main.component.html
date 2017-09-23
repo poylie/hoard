@@ -6,11 +6,10 @@
                 <div class="navbar-brand sidenav-brand">
                     <span class="sidenav-logo"></span>
                 </div>
+                <div *ngIf="getCurrentGroup()">
+                    <span>{{currentGroup.groupName}}</span>
+                </div>
                 <ul class="nav side-menu">
-                    <a routerLink="group" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>Group</span></li>
-                    </a>
                     <a routerLink="user-group" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                         <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span>User Group</span></li>

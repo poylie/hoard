@@ -7,6 +7,7 @@ import { JhiPaginationUtil } from 'ng-jhipster';
 import { GroupComponent } from './group.component';
 import { GroupDetailComponent } from './group-detail.component';
 import { GroupPopupComponent } from './group-dialog.component';
+import { GroupDashboardComponent } from './group-dashboard.component';
 import { GroupDeletePopupComponent } from './group-delete-dialog.component';
 
 import { Principal } from '../../shared';
@@ -26,6 +27,14 @@ export const groupRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'Groups'
+        },
+        canActivate: [UserRouteAccessService]
+    }, {
+        path: 'groupDashboard/:id',
+        component: GroupDashboardComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'Group'
         },
         canActivate: [UserRouteAccessService]
     }

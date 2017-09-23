@@ -6,3 +6,4 @@ export * from './group-delete-dialog.component';
 export * from './group-detail.component';
 export * from './group.component';
 export * from './group.route';
+export * from './group-dashboard.component';

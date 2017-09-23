@@ -10,6 +10,8 @@ import { HoardAdminModule } from './admin/admin.module';
 import { HoardAccountModule } from './account/account.module';
 import { HoardEntityModule } from './entities/entity.module';
 import { SidebarModule } from 'ng-sidebar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdTabsModule } from '@angular/material';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -26,21 +28,23 @@ import {
     ErrorComponent
 } from './layouts';
 
-import {JhipsterAboutUsModule} from './about-us/about-us.module';
-import {JhipsterDocumentModule} from './document/document.module';
+import { JhipsterAboutUsModule } from './about-us/about-us.module';
+import { JhipsterDocumentModule } from './document/document.module';
 @NgModule({
     imports: [
-JhipsterDocumentModule,
-JhipsterAboutUsModule,
+        JhipsterDocumentModule,
+        JhipsterAboutUsModule,
         BrowserModule,
         LayoutRoutingModule,
-        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),
         HoardSharedModule,
         HoardHomeModule,
         HoardAdminModule,
         HoardAccountModule,
         HoardEntityModule,
-        SidebarModule.forRoot()
+        SidebarModule.forRoot(),
+        MdTabsModule,
+        BrowserAnimationsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -56,6 +60,6 @@ JhipsterAboutUsModule,
         PaginationConfig,
         UserRouteAccessService
     ],
-    bootstrap: [ JhiMainComponent ]
+    bootstrap: [JhiMainComponent]
 })
-export class HoardAppModule {}
+export class HoardAppModule { }

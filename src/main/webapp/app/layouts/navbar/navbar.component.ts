@@ -7,6 +7,7 @@ import { Principal, LoginModalService, LoginService } from '../../shared';
 
 import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
 import { JhiMainComponent } from '../main/main.component';
+import { GroupService } from '../../entities/group';
 
 @Component({
     selector: 'jhi-navbar',
@@ -31,7 +32,8 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private comp: JhiMainComponent
+        private comp: JhiMainComponent,
+        private groupService: GroupService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -64,6 +66,7 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.mainComp.closeSidebar();
         this.collapseNavbar();
+        this.groupService.clearCurrentGroup();
         this.loginService.logout();
         this.router.navigate(['']);
     }

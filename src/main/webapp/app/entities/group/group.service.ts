@@ -9,7 +9,11 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class GroupService {
 
     private resourceUrl = 'api/groups';
+    private resourceUrlCurrentUser = 'api/groupsForUser';
     private resourceSearchUrl = 'api/_search/groups';
+    private resourceSearchUrlCurrentUser = 'api/_search/groupsCurrentuser';
+
+    currentGroup: Group;
 
     constructor(private http: Http) { }
 
@@ -35,7 +39,7 @@ export class GroupService {
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
+        return this.http.get(this.resourceUrlCurrentUser, options)
             .map((res: Response) => this.convertResponse(res));
     }
 
@@ -45,7 +49,7 @@ export class GroupService {
 
     search(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceSearchUrl, options)
+        return this.http.get(this.resourceSearchUrlCurrentUser, options)
             .map((res: any) => this.convertResponse(res));
     }
 
@@ -57,5 +61,17 @@ export class GroupService {
     private convert(group: Group): Group {
         const copy: Group = Object.assign({}, group);
         return copy;
+    }
+
+    setCurrentGroup(group: Group) {
+        this.currentGroup = group;
+    }
+
+    clearCurrentGroup() {
+        this.currentGroup = null;
+    }
+
+    getCurrentGroup(): Group {
+        return this.currentGroup;
     }
 }
