@@ -6,9 +6,15 @@ import com.hoard.app.domain.UserGroup;
 import com.hoard.app.repository.UserGroupRepository;
 import com.hoard.app.repository.search.UserGroupSearchRepository;
 import com.hoard.app.web.rest.util.HeaderUtil;
+import com.hoard.app.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,13 +95,16 @@ public class UserGroupResource {
     /**
      * GET  /user-groups : get all the userGroups.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of userGroups in body
      */
     @GetMapping("/user-groups")
     @Timed
-    public List<UserGroup> getAllUserGroups() {
-        log.debug("REST request to get all UserGroups");
-        return userGroupRepository.findAll();
+    public ResponseEntity<List<UserGroup>> getAllUserGroups(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of UserGroups");
+        Page<UserGroup> page = userGroupRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -132,15 +141,16 @@ public class UserGroupResource {
      * to the query.
      *
      * @param query the query of the userGroup search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/user-groups")
     @Timed
-    public List<UserGroup> searchUserGroups(@RequestParam String query) {
-        log.debug("REST request to search UserGroups for query {}", query);
-        return StreamSupport
-            .stream(userGroupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<UserGroup>> searchUserGroups(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of UserGroups for query {}", query);
+        Page<UserGroup> page = userGroupSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/user-groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

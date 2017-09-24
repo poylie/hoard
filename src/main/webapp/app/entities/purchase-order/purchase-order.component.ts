@@ -13,18 +13,41 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
     templateUrl: './purchase-order.component.html'
 })
 export class PurchaseOrderComponent implements OnInit, OnDestroy {
-purchaseOrders: PurchaseOrder[];
-    currentAccount: any;
+
+currentAccount: any;
+    purchaseOrders: PurchaseOrder[];
+    error: any;
+    success: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    routeData: any;
+    links: any;
+    totalItems: any;
+    queryCount: any;
+    itemsPerPage: any;
+    page: any;
+    predicate: any;
+    previousPage: any;
+    reverse: any;
 
     constructor(
         private purchaseOrderService: PurchaseOrderService,
+        private parseLinks: JhiParseLinks,
         private alertService: JhiAlertService,
-        private eventManager: JhiEventManager,
+        private principal: Principal,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private router: Router,
+        private eventManager: JhiEventManager,
+        private paginationUtil: JhiPaginationUtil,
+        private paginationConfig: PaginationConfig
     ) {
+        this.itemsPerPage = ITEMS_PER_PAGE;
+        this.routeData = this.activatedRoute.data.subscribe((data) => {
+            this.page = data['pagingParams'].page;
+            this.previousPage = data['pagingParams'].page;
+            this.reverse = data['pagingParams'].ascending;
+            this.predicate = data['pagingParams'].predicate;
+        });
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -32,31 +55,59 @@ purchaseOrders: PurchaseOrder[];
         if (this.currentSearch) {
             this.purchaseOrderService.search({
                 query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.purchaseOrders = res.json,
+                size: this.itemsPerPage,
+                sort: this.sort()}).subscribe(
+                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
                     (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
-       }
-        this.purchaseOrderService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.purchaseOrders = res.json;
-                this.currentSearch = '';
-            },
+        }
+        this.purchaseOrderService.query({
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort()}).subscribe(
+            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
         );
     }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
+    loadPage(page: number) {
+        if (page !== this.previousPage) {
+            this.previousPage = page;
+            this.transition();
         }
-        this.currentSearch = query;
+    }
+    transition() {
+        this.router.navigate(['/purchase-order'], {queryParams:
+            {
+                page: this.page,
+                size: this.itemsPerPage,
+                search: this.currentSearch,
+                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+            }
+        });
         this.loadAll();
     }
 
     clear() {
+        this.page = 0;
         this.currentSearch = '';
+        this.router.navigate(['/purchase-order', {
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
+        this.loadAll();
+    }
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.page = 0;
+        this.currentSearch = query;
+        this.router.navigate(['/purchase-order', {
+            search: this.currentSearch,
+            page: this.page,
+            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+        }]);
         this.loadAll();
     }
     ngOnInit() {
@@ -78,6 +129,21 @@ purchaseOrders: PurchaseOrder[];
         this.eventSubscriber = this.eventManager.subscribe('purchaseOrderListModification', (response) => this.loadAll());
     }
 
+    sort() {
+        const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+        if (this.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    private onSuccess(data, headers) {
+        this.links = this.parseLinks.parse(headers.get('link'));
+        this.totalItems = headers.get('X-Total-Count');
+        this.queryCount = this.totalItems;
+        // this.page = pagingParams.page;
+        this.purchaseOrders = data;
+    }
     private onError(error) {
         this.alertService.error(error.message, null, null);
     }

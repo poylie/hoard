@@ -44,6 +44,6 @@
     "javadoc": "PRODUCT",
     "entityTableName": "product",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

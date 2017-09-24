@@ -40,12 +40,13 @@
         },
         {
             "fieldName": "avatar",
-            "fieldType": "String"
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20170826155001",
     "entityTableName": "group",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

@@ -28,16 +28,16 @@
     <div class="table-responsive" *ngIf="salesOrders">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span>ID</span></th>
-            <th><span>Reference Number</span></th>
-            <th><span>Transaction Date</span></th>
-            <th><span>Last Updated</span></th>
-            <th><span>Customer</span></th>
-            <th><span>Status</span></th>
-            <th><span>Author</span></th>
-            <th><span>Last Edit</span></th>
-            <th><span>Group</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="referenceNumber"><span>Reference Number</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="transactionDate"><span>Transaction Date</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lastUpdated"><span>Last Updated</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="customer"><span>Customer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="status"><span>Status</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="author.id"><span>Author</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="lastEdit.id"><span>Last Edit</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="group.groupName"><span>Group</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -88,4 +88,12 @@
             </tbody>
         </table>
     </div>
+        <div *ngIf="salesOrders && salesOrders.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
 </div>

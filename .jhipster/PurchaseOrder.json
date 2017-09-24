@@ -65,6 +65,6 @@
     "javadoc": "PURCHASE ORDER",
     "entityTableName": "purchase_order",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

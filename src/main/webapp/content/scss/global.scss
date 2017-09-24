@@ -40,6 +40,27 @@ body, h1, h2, h3, h4 {
             background-size: contain;
         }
     }
+    .group-avatar-section {
+        a{
+            color: #FBFCFF;
+            text-decoration: none;
+            .group-avatar {
+                padding: 5px;
+                text-align: center;
+            }
+            .group-label {
+                padding-top: 5px;
+                h5 {
+                    font-size: 15px;
+                }
+                h6 {
+                    font-style: oblique;
+                    font-size: 9px;
+                    color:lighten( #1C6E8C, 20%);
+                }
+            }
+        }
+    }
     .side-menu {
         li {
             padding: 10px;
@@ -47,9 +68,17 @@ body, h1, h2, h3, h4 {
         li:hover {
             background-color: darken(#605856 , 10%)
         }
+        i {
+            color: #D0CCD0;
+        }
         a {
             color: #FBFCFF;
+            font-size: 15px;
             text-decoration: none;
+            span {
+                padding-left: 10px;
+                font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+            }
         }
         flex-direction: column;
     }

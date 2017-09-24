@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -44,8 +45,10 @@ public class GroupResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_AVATAR = "AAAAAAAAAA";
-    private static final String UPDATED_AVATAR = "BBBBBBBBBB";
+    private static final byte[] DEFAULT_AVATAR = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_AVATAR = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_AVATAR_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_AVATAR_CONTENT_TYPE = "image/png";
 
     @Autowired
     private GroupRepository groupRepository;
@@ -89,7 +92,8 @@ public class GroupResourceIntTest {
         Group group = new Group()
             .groupName(DEFAULT_GROUP_NAME)
             .description(DEFAULT_DESCRIPTION)
-            .avatar(DEFAULT_AVATAR);
+            .avatar(DEFAULT_AVATAR)
+            .avatarContentType(DEFAULT_AVATAR_CONTENT_TYPE);
         return group;
     }
 
@@ -117,6 +121,7 @@ public class GroupResourceIntTest {
         assertThat(testGroup.getGroupName()).isEqualTo(DEFAULT_GROUP_NAME);
         assertThat(testGroup.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testGroup.getAvatar()).isEqualTo(DEFAULT_AVATAR);
+        assertThat(testGroup.getAvatarContentType()).isEqualTo(DEFAULT_AVATAR_CONTENT_TYPE);
 
         // Validate the Group in Elasticsearch
         Group groupEs = groupSearchRepository.findOne(testGroup.getId());
@@ -173,7 +178,8 @@ public class GroupResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(group.getId().intValue())))
             .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())));
+            .andExpect(jsonPath("$.[*].avatarContentType").value(hasItem(DEFAULT_AVATAR_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(Base64Utils.encodeToString(DEFAULT_AVATAR))));
     }
 
     @Test
@@ -189,7 +195,8 @@ public class GroupResourceIntTest {
             .andExpect(jsonPath("$.id").value(group.getId().intValue()))
             .andExpect(jsonPath("$.groupName").value(DEFAULT_GROUP_NAME.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.avatar").value(DEFAULT_AVATAR.toString()));
+            .andExpect(jsonPath("$.avatarContentType").value(DEFAULT_AVATAR_CONTENT_TYPE))
+            .andExpect(jsonPath("$.avatar").value(Base64Utils.encodeToString(DEFAULT_AVATAR)));
     }
 
     @Test
@@ -213,7 +220,8 @@ public class GroupResourceIntTest {
         updatedGroup
             .groupName(UPDATED_GROUP_NAME)
             .description(UPDATED_DESCRIPTION)
-            .avatar(UPDATED_AVATAR);
+            .avatar(UPDATED_AVATAR)
+            .avatarContentType(UPDATED_AVATAR_CONTENT_TYPE);
 
         restGroupMockMvc.perform(put("/api/groups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -227,6 +235,7 @@ public class GroupResourceIntTest {
         assertThat(testGroup.getGroupName()).isEqualTo(UPDATED_GROUP_NAME);
         assertThat(testGroup.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testGroup.getAvatar()).isEqualTo(UPDATED_AVATAR);
+        assertThat(testGroup.getAvatarContentType()).isEqualTo(UPDATED_AVATAR_CONTENT_TYPE);
 
         // Validate the Group in Elasticsearch
         Group groupEs = groupSearchRepository.findOne(testGroup.getId());
@@ -287,7 +296,8 @@ public class GroupResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(group.getId().intValue())))
             .andExpect(jsonPath("$.[*].groupName").value(hasItem(DEFAULT_GROUP_NAME.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].avatar").value(hasItem(DEFAULT_AVATAR.toString())));
+            .andExpect(jsonPath("$.[*].avatarContentType").value(hasItem(DEFAULT_AVATAR_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].avatar").value(hasItem(Base64Utils.encodeToString(DEFAULT_AVATAR))));
     }
 
     @Test

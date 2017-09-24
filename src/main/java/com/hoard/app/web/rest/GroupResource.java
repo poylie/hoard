@@ -12,10 +12,17 @@ import com.hoard.app.repository.UserRepository;
 import com.hoard.app.repository.search.GroupSearchRepository;
 import com.hoard.app.security.SecurityUtils;
 import com.hoard.app.web.rest.util.HeaderUtil;
+import com.hoard.app.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -125,26 +132,25 @@ public class GroupResource {
     /**
      * GET  /groups : get all the groups.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of groups in body
      */
     @GetMapping("/groups")
     @Timed
-    public List<Group> getAllGroups() {
-        log.debug("REST request to get all Groups");
-        return groupRepository.findAll();
+    public ResponseEntity<List<Group>> getAllGroups(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Groups");
+        Page<Group> page = groupRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    /**
-     * GET  /groupsForUser : get all the groups where user belongs to.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of groups in body
-     */
     @GetMapping("/groupsForUser")
     @Timed
-    public List<Group> getAllGroupsForCurrentUser() {
-        log.debug("REST request to get all Groups");
-
-        return new ArrayList<Group>(groupRepository.findByUsersUserLogin(SecurityUtils.getCurrentUserLogin()));
+    public ResponseEntity<List<Group>> getAllGroupsForCurrentUser(@ApiParam Pageable pageable) {
+        log.debug("REST request to get all Groups for User");
+        Page<Group> page = new PageImpl<Group>(groupRepository.findDistinctByUsersUserLogin(SecurityUtils.getCurrentUserLogin(), pageable));
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/groupsForUser");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 
@@ -181,17 +187,17 @@ public class GroupResource {
      * SEARCH  /_search/groups?query=:query : search for the group corresponding
      * to the query.
      *
-     * @param query the query of the group search
+     * @param query    the query of the group search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/groups")
     @Timed
-    public List<Group> searchGroups(@RequestParam String query) {
-        log.debug("REST request to search Groups for query {}", query);
-
-        return StreamSupport
-            .stream(groupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Group>> searchGroups(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of Groups for query {}", query);
+        Page<Group> page = groupSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -203,15 +209,16 @@ public class GroupResource {
      */
     @GetMapping("/_search/groupsCurrentuser")
     @Timed
-    public List<Group> searchGroupsCurrentUser(@RequestParam String query) {
+    public ResponseEntity<List<Group>> searchGroupsCurrentUser(@RequestParam String query, @ApiParam Pageable pageable) {
         log.debug("REST request to search Groups for query {}", query);
 
         List<UserGroup> userGroupList = userGroupRepository.findByUserIsCurrentUser();
+        Page<Group> page = new PageImpl<Group>(StreamSupport
+            .stream(groupSearchRepository.search(queryStringQuery(query), pageable).spliterator(), false)
+            .filter(group -> userGroupList.stream().map(userGroup -> userGroup.getGroup().getId()).collect(Collectors.toList()).contains(group.getId())).collect(Collectors.toList()));
 
-        return StreamSupport
-            .stream(groupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .filter(group -> userGroupList.stream().map(userGroup -> userGroup.getGroup().getId()).collect(Collectors.toList()).contains(group.getId()))
-            .collect(Collectors.toList());
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

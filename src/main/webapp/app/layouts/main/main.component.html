@@ -6,36 +6,48 @@
                 <div class="navbar-brand sidenav-brand">
                     <span class="sidenav-logo"></span>
                 </div>
-                <div *ngIf="getCurrentGroup()">
-                    <span>{{currentGroup.groupName}}</span>
+                <div *ngIf="getCurrentGroup()" class="group-avatar-section container-fluid">
+                    <a [routerLink]="['../groupDashboard', currentGroup.id ]">
+                        <div class="row">
+                            <div class="group-avatar col-sm-4">
+                                <img *ngIf="currentGroup.avatar" [src]="'data:' + currentGroup.avatarContentType + ';base64,' + currentGroup.avatar" style="max-height: 30px;"
+                                    alt="group image" />
+                                <i *ngIf="!currentGroup.avatar" class="fa fa-fw fa-lg fa-group" aria-hidden="true" style="max-height: 30px;">
+                            </div>
+                            <div class="group-label col-sm-8">
+                                <h5>{{currentGroup.groupName}}</h5>
+                                <h6>Current Group</h6>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <ul class="nav side-menu">
+                <ul class="nav side-menu" *ngIf="getCurrentGroup()">
                     <a routerLink="user-group" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span>User Group</span></li>
+                        <li><i class="fa fa-fw fa-user-circle-o" aria-hidden="true"></i>
+                                <span>Users</span></li>
                     </a>
                     <a routerLink="product" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <li><i class="fa fa-fw fa-flask" aria-hidden="true"></i>
                             <span>Product</span></li>
                     </a>
                     <a routerLink="purchase-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <li><i class="fa fa-fw fa-cubes" aria-hidden="true"></i>
                             <span>Purchase Order</span></li>
                     </a>
                     <a routerLink="sales-order" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <li><i class="fa fa-fw fa-truck" aria-hidden="true"></i>
                             <span>Sales Orer</span></li>
                     </a>
                     <a routerLink="invitation" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <li><i class="fa fa-fw fa-envelope-open-o" aria-hidden="true"></i>
                             <span>Invitation</span></li>
                     </a>
                     <a routerLink="request" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <li><i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <li><i class="fa fa-fw fa-check-square-o" aria-hidden="true"></i>
                             <span>Request</span></li>
                     </a>
-                </ul>
-            </div>
+                    </ul>
+                    </div>
         </ng-sidebar>
         <!-- Page content -->
         <div ng-sidebar-content>
@@ -52,8 +64,8 @@
             <jhi-footer *ngIf="!isAuthenticated()"></jhi-footer>
         </div>
     </ng-sidebar-container>
-</div>
-<!-- <div [ngSwitch]="isAuthenticated()">
+    </div>
+    <!-- <div [ngSwitch]="isAuthenticated()">
     <div class="container-fluid" *ngSwitchCase="true">
         <div class="card jh-card">
             <router-outlet></router-outlet>

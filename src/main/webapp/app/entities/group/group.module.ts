@@ -13,8 +13,10 @@ import {
     GroupDeleteDialogComponent,
     groupRoute,
     groupPopupRoute,
+    GroupResolvePagingParams,
     GroupDashboardComponent,
 } from './';
+import { MdCardModule } from '@angular/material';
 
 const ENTITY_STATES = [
     ...groupRoute,
@@ -24,7 +26,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         HoardSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        RouterModule.forRoot(ENTITY_STATES, { useHash: true }),
+        MdCardModule
     ],
     declarations: [
         GroupDetailComponent,
@@ -43,7 +46,8 @@ const ENTITY_STATES = [
     providers: [
         GroupService,
         GroupPopupService,
+        GroupResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HoardGroupModule {}
+export class HoardGroupModule { }

@@ -29,6 +29,6 @@
     "changelogDate": "20170826155002",
     "entityTableName": "user_group",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }

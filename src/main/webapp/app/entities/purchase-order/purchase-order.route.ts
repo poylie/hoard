@@ -11,10 +11,29 @@ import { PurchaseOrderDeletePopupComponent } from './purchase-order-delete-dialo
 
 import { Principal } from '../../shared';
 
+@Injectable()
+export class PurchaseOrderResolvePagingParams implements Resolve<any> {
+
+    constructor(private paginationUtil: JhiPaginationUtil) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const page = route.queryParams['page'] ? route.queryParams['page'] : '1';
+        const sort = route.queryParams['sort'] ? route.queryParams['sort'] : 'id,asc';
+        return {
+            page: this.paginationUtil.parsePage(page),
+            predicate: this.paginationUtil.parsePredicate(sort),
+            ascending: this.paginationUtil.parseAscending(sort)
+      };
+    }
+}
+
 export const purchaseOrderRoute: Routes = [
     {
         path: 'purchase-order',
         component: PurchaseOrderComponent,
+        resolve: {
+            'pagingParams': PurchaseOrderResolvePagingParams
+        },
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'PurchaseOrders'

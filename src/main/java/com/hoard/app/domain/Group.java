@@ -35,8 +35,12 @@ public class Group implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Lob
     @Column(name = "avatar")
-    private String avatar;
+    private byte[] avatar;
+
+    @Column(name = "avatar_content_type")
+    private String avatarContentType;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -92,17 +96,30 @@ public class Group implements Serializable {
         this.description = description;
     }
 
-    public String getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public Group avatar(String avatar) {
+    public Group avatar(byte[] avatar) {
         this.avatar = avatar;
         return this;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAvatarContentType() {
+        return avatarContentType;
+    }
+
+    public Group avatarContentType(String avatarContentType) {
+        this.avatarContentType = avatarContentType;
+        return this;
+    }
+
+    public void setAvatarContentType(String avatarContentType) {
+        this.avatarContentType = avatarContentType;
     }
 
     public Set<UserGroup> getUsers() {
@@ -232,6 +249,7 @@ public class Group implements Serializable {
             ", groupName='" + getGroupName() + "'" +
             ", description='" + getDescription() + "'" +
             ", avatar='" + getAvatar() + "'" +
+            ", avatarContentType='" + avatarContentType + "'" +
             "}";
     }
 }

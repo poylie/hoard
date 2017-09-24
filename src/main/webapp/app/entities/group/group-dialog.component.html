@@ -30,8 +30,20 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_avatar">Avatar</label>
-            <input type="text" class="form-control" name="avatar" id="field_avatar"
+            <div>
+                <img [src]="'data:' + group.avatarContentType + ';base64,' + group.avatar" style="max-height: 100px;" *ngIf="group.avatar" alt="group image"/>
+                <div *ngIf="group.avatar" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{group.avatarContentType}}, {{byteSize(group.avatar)}}</span>
+                    <button type="button" (click)="clearInputImage('avatar', 'avatarContentType', 'fileImage')" class="btn btn-default btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="fileImage" (change)="setFileData($event, group, 'avatar', true)" accept="image/*"/>
+            </div>
+            <input type="hidden" class="form-control" name="avatar" id="field_avatar"
                 [(ngModel)]="group.avatar"  />
+            <input type="hidden" class="form-control" name="avatarContentType" id="field_avatarContentType"
+                [(ngModel)]="group.avatarContentType" />
         </div>
 
     </div>

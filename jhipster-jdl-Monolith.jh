@@ -1,7 +1,7 @@
 entity Group {
 	groupName String required,
     description String,
-    avatar String
+    avatar ImageBlob
 }
 
 entity UserGroup{
@@ -130,3 +130,5 @@ relationship ManyToOne{
 	Request{requestor} to User,
     Request{group} to Group
 }
+
+paginate Group, UserGroup, SalesOrder, PurchaseOrder, Product with pagination

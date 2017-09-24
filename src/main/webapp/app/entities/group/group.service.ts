@@ -68,6 +68,7 @@ export class GroupService {
     }
 
     clearCurrentGroup() {
+        console.log('cleared');
         this.currentGroup = null;
     }
 

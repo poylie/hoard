@@ -5,7 +5,6 @@ import com.hoard.app.domain.Request;
 
 import com.hoard.app.domain.UserGroup;
 import com.hoard.app.domain.enumeration.Feature;
-import com.hoard.app.domain.enumeration.InvitationStatus;
 import com.hoard.app.domain.enumeration.Permission;
 import com.hoard.app.domain.enumeration.RequestStatus;
 import com.hoard.app.repository.RequestRepository;
@@ -113,7 +112,6 @@ public class RequestResource {
         });
 
     }
-
     /**
      * GET  /requests : get all the requests.
      *

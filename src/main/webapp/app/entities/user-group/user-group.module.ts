@@ -14,6 +14,7 @@ import {
     UserGroupDeleteDialogComponent,
     userGroupRoute,
     userGroupPopupRoute,
+    UserGroupResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -45,6 +46,7 @@ const ENTITY_STATES = [
     providers: [
         UserGroupService,
         UserGroupPopupService,
+        UserGroupResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

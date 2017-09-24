@@ -7,13 +7,14 @@ import { HOME_ROUTE, HomeComponent } from './';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdTabsModule } from '@angular/material';
 import { GroupComponent } from '../entities/group';
+import { HomeGroupResolvePagingParams } from './';
 
 @NgModule({
     imports: [
         HoardSharedModule,
         RouterModule.forRoot([HOME_ROUTE], { useHash: true }),
         BrowserAnimationsModule,
-        MdTabsModule
+        MdTabsModule,
     ],
     declarations: [
         HomeComponent,
@@ -22,6 +23,7 @@ import { GroupComponent } from '../entities/group';
     entryComponents: [
     ],
     providers: [
+        HomeGroupResolvePagingParams
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

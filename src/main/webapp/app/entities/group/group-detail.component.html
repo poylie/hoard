@@ -14,7 +14,12 @@
         </dd>
         <dt><span>Avatar</span></dt>
         <dd>
-            <span>{{group.avatar}}</span>
+            <div *ngIf="group.avatar">
+                <a (click)="openFile(group.avatarContentType, group.avatar)">
+                    <img [src]="'data:' + group.avatarContentType + ';base64,' + group.avatar" style="max-width: 100%;" alt="group image"/>
+                </a>
+                {{group.avatarContentType}}, {{byteSize(group.avatar)}}
+            </div>
         </dd>
     </dl>
 

@@ -7,7 +7,7 @@ import { GroupService } from './group.service';
 @Component({
   selector: 'jhi-group-dashboard',
   templateUrl: './group-dashboard.component.html',
-  styles: []
+  styleUrls: ['group.scss']
 })
 export class GroupDashboardComponent implements OnInit {
 

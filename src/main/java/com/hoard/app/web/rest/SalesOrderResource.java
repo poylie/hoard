@@ -6,9 +6,15 @@ import com.hoard.app.domain.SalesOrder;
 import com.hoard.app.repository.SalesOrderRepository;
 import com.hoard.app.repository.search.SalesOrderSearchRepository;
 import com.hoard.app.web.rest.util.HeaderUtil;
+import com.hoard.app.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,13 +96,16 @@ public class SalesOrderResource {
     /**
      * GET  /sales-orders : get all the salesOrders.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of salesOrders in body
      */
     @GetMapping("/sales-orders")
     @Timed
-    public List<SalesOrder> getAllSalesOrders() {
-        log.debug("REST request to get all SalesOrders");
-        return salesOrderRepository.findAll();
+    public ResponseEntity<List<SalesOrder>> getAllSalesOrders(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of SalesOrders");
+        Page<SalesOrder> page = salesOrderRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sales-orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -133,15 +142,16 @@ public class SalesOrderResource {
      * to the query.
      *
      * @param query the query of the salesOrder search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/sales-orders")
     @Timed
-    public List<SalesOrder> searchSalesOrders(@RequestParam String query) {
-        log.debug("REST request to search SalesOrders for query {}", query);
-        return StreamSupport
-            .stream(salesOrderSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<SalesOrder>> searchSalesOrders(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of SalesOrders for query {}", query);
+        Page<SalesOrder> page = salesOrderSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/sales-orders");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }
