@@ -28,62 +28,56 @@
     <div class="table-responsive" *ngIf="userGroups">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="permission"><span>Permission</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="feature"><span>Feature</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="group.id"><span>Group</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="user.id"><span>User</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <th jhiSortBy="user.id"><span>User Id</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="user.firstName"><span>First Name</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="user.lastName"><span>Last Name</span> <span class="fa fa-sort"></span></th>
+                    <th jhiSortBy="user.email"><span>Email</span> <span class="fa fa-sort"></span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let userGroup of userGroups ;trackBy: trackId">
-                <td><a [routerLink]="['../user-group', userGroup.id ]">{{userGroup.id}}</a></td>
-                <td>{{userGroup.permission}}</td>
-                <td>{{userGroup.feature}}</td>
-                <td>
-                    <div *ngIf="userGroup.group">
-                        <a [routerLink]="['../group', userGroup.group?.id ]" >{{userGroup.group?.id}}</a>
-                    </div>
-                </td>
-                <td>
-                    {{userGroup.user?.id}}
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../user-group', userGroup.id ]"
-                                class="btn btn-info btn-sm">
+                <tr *ngFor="let userGroup of userGroups ;trackBy: trackId">
+                    <td>
+                        {{userGroup.user?.id}}
+                    </td>
+                    <td>
+                        {{userGroup.user?.firstName}}
+                    </td>
+                    <td>
+                        {{userGroup.user?.lastName}}
+                    </td>
+                    <td>
+                        {{userGroup.user?.email}}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../user-group', userGroup.id ]" class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down">View</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'user-group/'+ userGroup.id + '/edit'} }]"
-                                replaceUrl="true"
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'user-group/'+ userGroup.id + '/edit'} }]" replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down">Edit</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'user-group/'+ userGroup.id + '/delete'} }]"
-                                replaceUrl="true"
+                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'user-group/'+ userGroup.id + '/delete'} }]" replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>
                             <span class="hidden-md-down">Delete</span>
                         </button>
-                    </div>
-                </td>
-            </tr>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
-        <div *ngIf="userGroups && userGroups.length">
-            <div class="row justify-content-center">
-                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-            </div>
-            <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
-            </div>
+    <div *ngIf="userGroups && userGroups.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
 </div>

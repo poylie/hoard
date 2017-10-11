@@ -9,6 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class UserGroupService {
 
     private resourceUrl = 'api/user-groups';
+    private resourceUrlCurrentGroup = 'api/user-groups/current-group';
     private resourceSearchUrl = 'api/_search/user-groups';
 
     constructor(private http: Http) { }
@@ -33,9 +34,9 @@ export class UserGroupService {
         });
     }
 
-    query(req?: any): Observable<ResponseWrapper> {
+    query(groupId: number, req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceUrl, options)
+        return this.http.get(`${this.resourceUrlCurrentGroup}/${groupId}`, options)
             .map((res: Response) => this.convertResponse(res));
     }
 

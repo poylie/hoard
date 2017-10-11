@@ -1,9 +1,12 @@
 package com.hoard.app.repository;
 
 import com.hoard.app.domain.UserGroup;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
 import java.util.List;
 
 /**
@@ -16,6 +19,6 @@ public interface UserGroupRepository extends JpaRepository<UserGroup,Long> {
     @Query("select user_group from UserGroup user_group where user_group.user.login = ?#{principal.username}")
     List<UserGroup> findByUserIsCurrentUser();
 
-    List<UserGroup> findByGroupId(Long groupId);
+    Page<UserGroup> findByGroupId(Long groupId, Pageable pageable);
 
 }

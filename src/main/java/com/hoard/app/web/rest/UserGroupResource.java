@@ -12,6 +12,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -104,6 +105,30 @@ public class UserGroupResource {
         log.debug("REST request to get a page of UserGroups");
         Page<UserGroup> page = userGroupRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-groups");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/user-groups/current-group/{groupId}")
+    @Timed
+    public ResponseEntity<List<UserGroup>> getUserGroupsByGroup(@ApiParam Pageable pageable, @PathVariable Long groupId) {
+        log.debug("REST request to get a page of UserGroups");
+//        List<UserGroup> completeList = userGroupRepository.findByGroupId(groupId, pageable);
+//        List<UserGroup> filteredList = new ArrayList<>();
+//
+//        completeList.forEach(userGroup -> {
+//            if (CollectionUtils.isEmpty(filteredList)) {
+//                filteredList.add(userGroup);
+//            } else {
+//                filteredList.forEach(tempUserGroup -> {
+//                    if (!userGroup.getUser().getId().equals(tempUserGroup.getUser().getId())) {
+//                        filteredList.add(userGroup);
+//                    }
+//                });
+//            }
+//        });
+
+        Page<UserGroup> page = userGroupRepository.findByGroupId(groupId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/user-groups/current-group/{groupId}");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

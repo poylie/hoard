@@ -225,7 +225,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsersNotInGroup(Pageable pageable, Long groupId) {
 
-        List<Long> existingUserIds = userGroupRepository.findByGroupId(groupId).stream().map(userGroup -> userGroup.getUser().getId()).collect(Collectors.toList());
+        List<Long> existingUserIds = userGroupRepository.findByGroupId(groupId,pageable).getContent().stream().map(userGroup -> userGroup.getUser().getId()).collect(Collectors.toList());
 
         return userRepository.findAllByLoginNotAndIdNotIn(pageable, Constants.ANONYMOUS_USER, existingUserIds).map(UserDTO::new);
     }

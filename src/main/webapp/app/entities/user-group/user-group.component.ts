@@ -5,6 +5,7 @@ import { JhiEventManager, JhiParseLinks, JhiPaginationUtil, JhiAlertService } fr
 
 import { UserGroup } from './user-group.model';
 import { UserGroupService } from './user-group.service';
+import { GroupService } from '../group';
 import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 
@@ -14,7 +15,7 @@ import { PaginationConfig } from '../../blocks/config/uib-pagination.config';
 })
 export class UserGroupComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     userGroups: UserGroup[];
     error: any;
     success: any;
@@ -39,7 +40,8 @@ currentAccount: any;
         private router: Router,
         private eventManager: JhiEventManager,
         private paginationUtil: JhiPaginationUtil,
-        private paginationConfig: PaginationConfig
+        private paginationConfig: PaginationConfig,
+        private groupService: GroupService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe((data) => {
@@ -56,19 +58,21 @@ currentAccount: any;
             this.userGroupService.search({
                 query: this.currentSearch,
                 size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-                    (res: ResponseWrapper) => this.onError(res.json)
+                sort: this.sort()
+            }).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
                 );
             return;
         }
-        this.userGroupService.query({
+        this.userGroupService.query(this.groupService.getCurrentGroup().id, {
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
+            sort: this.sort()
+        }).subscribe(
             (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
             (res: ResponseWrapper) => this.onError(res.json)
-        );
+            );
     }
     loadPage(page: number) {
         if (page !== this.previousPage) {
@@ -77,7 +81,8 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/user-group'], {queryParams:
+        this.router.navigate(['/user-group'], {
+            queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
